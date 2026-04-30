@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flowstate OS - Operating System for High-Performance Creative Teams</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0a;
+            color: #f5f5f5;
+            overflow-x: hidden;
+        }
+
+        /* Tailwind config customization */
+        :root {
+            --color-emerald-primary: #10b981;
+            --color-graphite: #1a1a1a;
+            --color-graphite-light: #2d2d2d;
+            --color-graphite-lighter: #404040;
+        }
+
+        /* Glassmorphism */
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .glass-hover:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        /* Smooth transitions */
+        .transition-smooth {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Hero gradient background */
+        .hero-gradient {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-gradient::before {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            top: -100px;
+            right: -100px;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .hero-gradient::after {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.05) 0%, transparent 70%);
+            border-radius: 50%;
+            bottom: -50px;
+            left: 10%;
+            animation: float 8s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(20px);
+            }
+        }
+
+        /* Feature card animations */
+        .feature-card {
+            opacity: 0;
+            animation: slideUp 0.6s ease-out forwards;
+        }
+
+        .feature-card:nth-child(1) { animation-delay: 0.1s; }
+        .feature-card:nth-child(2) { animation-delay: 0.2s; }
+        .feature-card:nth-child(3) { animation-delay: 0.3s; }
+        .feature-card:nth-child(4) { animation-delay: 0.4s; }
+        .feature-card:nth-child(5) { animation-delay: 0.5s; }
+        .feature-card:nth-child(6) { animation-delay: 0.6s; }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Hover lift effect */
+        .hover-lift {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .hover-lift:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(16, 185, 129, 0.1);
+        }
+
+        /* Button animations */
+        .btn-primary {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            transition: left 0.3s ease;
+            z-index: 1;
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary span {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Logo marquee */
+        .logo-marquee {
+            display: flex;
+            gap: 48px;
+            animation: scroll 20s linear infinite;
+            width: fit-content;
+        }
+
+        .logo-marquee:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes scroll {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        /* Accordion animations */
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .accordion-item.active .accordion-content {
+            max-height: 500px;
+        }
+
+        .accordion-item.active .accordion-icon {
+            transform: rotate(180deg);
+        }
+
+        .accordion-icon {
+            transition: transform 0.3s ease;
+        }
+
+        /* Header sticky effect */
+        .header-sticky {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            animation: slideDown 0.4s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive grid */
+        @media (max-width: 768px) {
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .logo-marquee {
+                gap: 32px;
+            }
+        }
+
+        /* Text animations */
+        .text-gradient {
+            background: linear-gradient(135deg, #f5f5f5 0%, #10b981 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Subtle borders */
+        .border-subtle {
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .border-subtle-hover:hover {
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+
+        /* Spacing system (8pt) */
+        .space-1 { gap: 0.5rem; }
+        .space-2 { gap: 1rem; }
+        .space-3 { gap: 1.5rem; }
+        .space-4 { gap: 2rem; }
+        .space-5 { gap: 2.5rem; }
+        .space-6 { gap: 3rem; }
+
+        /* Code block styling */
+        .code-block {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            color: #10b981;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sticky Header -->
+    <header class="header-sticky glass">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center">
+                    <svg class="w-5 h-5 text-emerald-400" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                    </svg>
+                </div>
+                <span class="font-bold text-lg tracking-tight">Flowstate OS</span>
+            </div>
+
+            <nav class="hidden md:flex items-center gap-8">
+                <a href="#features" class="text-sm font-medium text-gray-300 hover:text-white transition-smooth">Features</a>
+                <a href="#faq" class="text-sm font-medium text-gray-300 hover:text-white transition-smooth">FAQ</a>
+                <a href="#pricing" class="text-sm font-medium text-gray-300 hover:text-white transition-smooth">Pricing</a>
+                <a href="#contact" class="text-sm font-medium text-gray-300 hover:text-white transition-smooth">Contact</a>
+            </nav>
+
+            <button class="btn-primary bg-emerald-500 hover:bg-emerald-600 text-black font-semibold px-6 py-2.5 rounded-lg transition-smooth flex items-center gap-2">
+                <span>Join Waitlist</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-gradient relative pt-20 pb-32 md:pt-32 md:pb-48">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center relative z-10">
+                <!-- Left content -->
+                <div class="space-y-8">
+                    <div class="space-y-6">
+                        <h1 class="text-5xl md:text-6xl font-black leading-tight font-['Plus_Jakarta_Sans'] tracking-tight">
+                            <span class="text-white">Plan. Execute.</span>
+                            <br/>
+                            <span class="text-gradient">Ship Without Friction.</span>
+                        </h1>
+                        <p class="text-lg text-gray-300 leading-relaxed max-w-md">
+                            The operating system for high-performance creative teams. Unify your workflow, eliminate bottlenecks, and ship faster than ever before.
+                        </p>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row gap-4 pt-4">
+                        <button class="btn-primary group relative bg-emerald-500 hover:bg-emerald-600 text-black font-semibold px-8 py-4 rounded-lg transition-smooth flex items-center justify-center gap-2 overflow-hidden">
+                            <span class="relative z-10">Book a Demo</span>
+                            <svg class="w-5 h-5 relative z-10 group-hover:translate-x-1 transition-smooth" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                            </svg>
+                        </button>
+                        <button class="glass glass-hover px-8 py-4 rounded-lg font-semibold transition-smooth flex items-center justify-center gap-2 group">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/>
+                            </svg>
+                            <span>Watch Demo</span>
+                        </button>
+                    </div>
+
+                    <div class="flex items-center gap-6 pt-4 text-sm text-gray-400">
+                        <div class="flex items-center gap-2">
+                            <svg class="w-5 h-5 text-emerald-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            <span>10-minute setup</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <svg class="w-5 h-5 text-emerald-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            <span>No credit card</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right visual -->
+                <div class="relative h-96 md:h-full flex items-center justify-center">
+                    <div class="absolute inset-0 glass rounded-2xl overflow-hidden border border-emerald-500/20">
+                        <div class="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-transparent"></div>
+                        <div class="relative w-full h-full flex items-center justify-center p-8">
+                            <div class="space-y-4 w-full">
+                                <div class="h-3 bg-emerald-500/30 rounded-full w-3/4"></div>
+                                <div class="h-3 bg-emerald-500/20 rounded-full w-full"></div>
+                                <div class="h-3 bg-emerald-500/30 rounded-full w-5/6"></div>
+                                <div class="h-3 bg-emerald-500/20 rounded-full w-4/5"></div>
+                                <div class="h-3 bg-emerald-500/30 rounded-full w-3/4"></div>
+                            </div>
+                            <div class="absolute top-1/4 right-1/4 w-24 h-24 bg-emerald-500/5 rounded-full blur-2xl"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-24 md:py-32">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center space-y-4 mb-16">
+                <p class="text-emerald-400 font-semibold text-sm uppercase tracking-widest">CAPABILITIES</p>
+                <h2 class="text-4xl md:text-5xl font-black font-['Plus_Jakarta_Sans'] tracking-tight leading-tight">
+                    Built for Modern Teams
+                </h2>
+                <p class="text-lg text-gray-400 max-w-2xl mx-auto">
+                    A complete toolkit designed from the ground up to streamline collaboration and accelerate creative output.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 feature-grid">
+                <!-- Feature 1 -->
+                <div class="feature-card group glass glass-hover hover-lift p-8 rounded-xl border border-subtle border-subtle-hover">
+                    <div class="w-12 h-12 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center mb-6 group-hover:scale-110 transition-smooth">
+                        <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4 font-['Plus_Jakarta_Sans']">Instant Sync</h3>
+                    <p class="text-gray-400 leading-relaxed">Real-time synchronization across all devices and team members. Work moves at the speed of thought.</p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="feature-card group glass glass-hover hover-lift p-8 rounded-xl border border-subtle border-subtle-hover">
+                    <div class="w-12 h-12 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center mb-6 group-hover:scale-110 transition-smooth">
+                        <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4 font-['Plus_Jakarta_Sans']">Smart Workflows</h3>
+                    <p class="text-gray-400 leading-relaxed">Intelligent automation learns your patterns and eliminates repetitive tasks automatically.</p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="feature-card group glass glass-hover hover-lift p-8 rounded-xl border border-subtle border-subtle-hover">
+                    <div class="w-12 h-12 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center mb-6 group-hover:scale-110 transition-smooth">
+                        <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4 font-['Plus_Jakarta_Sans']">Enterprise Security</h3>
+                    <p class="text-gray-400 leading-relaxed">Bank-grade encryption and compliance. Your work stays secure, always encrypted end-to-end.</p>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="feature-card group glass glass-hover hover-lift p-8 rounded-xl border border-subtle border-subtle-hover">
+                    <div class="w-12 h-12 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center mb-6 group-hover:scale-110 transition-smooth">
+                        <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4 font-['Plus_Jakarta_Sans']">API-First Design</h3>
+                    <p class="text-gray-400 leading-relaxed">Powerful REST API and webhooks for seamless integration with your existing tools and systems.</p>
+                </div>
+
+                <!-- Feature 5 -->
+                <div class="feature-card group glass glass-hover hover-lift p-8 rounded-xl border border-subtle border-subtle-hover">
+                    <div class="w-12 h-12 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center mb-6 group-hover:scale-110 transition-smooth">
+                        <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4 font-['Plus_Jakarta_Sans']">Advanced Analytics</h3>
+                    <p class="text-gray-400 leading-relaxed">Deep insights into team performance and project metrics. Data-driven decisions made simple.</p>
+                </div>
+
+                <!-- Feature 6 -->
+                <div class="feature-card group glass glass-hover hover-lift p-8 rounded-xl border border-subtle border-subtle-hover">
+                    <div class="w-12 h-12 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center mb-6 group-hover:scale-110 transition-smooth">
+                        <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4 font-['Plus_Jakarta_Sans']">Intuitive UI</h3>
+                    <p class="text-gray-400 leading-relaxed">Thoughtfully designed interface that feels natural. Zero learning curve, maximum productivity.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Social Proof Section -->
+    <section class="py-16 md:py-24 border-t border-subtle">
+        <div class="max-w-7xl mx-auto px-6">
+            <p class="text-center text-sm text-gray-500 uppercase tracking-widest mb-12 font-semibold">Trusted by Industry Leaders</p>
+            <div class="overflow-hidden">
+                <div class="logo-marquee">
+                    <!-- Logo items (grayscale) -->
+                    <div class="flex items-center gap-4 text-gray-400 font-semibold whitespace-nowrap opacity-50 hover:opacity-100 transition-smooth">
+                        <span>Figma</span>
+                    </div>
+                    <div class="flex items-center gap-4 text-gray-400 font-semibold whitespace-nowrap opacity-50 hover:opacity-100 transition-smooth">
+                        <span>Notion</span>
+                    </div>
+                    <div class="flex items-center gap-4 text-gray-400 font-semibold whitespace-nowrap opacity-50 hover:opacity-100 transition-smooth">
+                        <span>Stripe</span>
+                    </div>
+                    <div class="flex items-center gap-4 text-gray-400 font-semibold whitespace-nowrap opacity-50 hover:opacity-100 transition-smooth">
+                        <span>Apple</span>
+                    </div>
+                    <div class="flex items-center gap-4 text-gray-400 font-semibold whitespace-nowrap opacity-50 hover:opacity-100 transition-smooth">
+                        <span>Microsoft</span>
+                    </div>
+
+                    <!-- Duplicate for seamless loop -->
+                    <div class="flex items-center gap-4 text-gray-400 font-semibold whitespace-nowrap opacity-50 hover:opacity-100 transition-smooth">
+                        <span>Figma</span>
+                    </div>
+                    <div class="flex items-center gap-4 text-gray-400 font-semibold whitespace-nowrap opacity-50 hover:opacity-100 transition-smooth">
+                        <span>Notion</span>
+                    </div>
+                    <div class="flex items-center gap-4 text-gray-400 font-semibold whitespace-nowrap opacity-50 hover:opacity-100 transition-smooth">
+                        <span>Stripe</span>
+                    </div>
+                    <div class="flex items-center gap-4 text-gray-400 font-semibold whitespace-nowrap opacity-50 hover:opacity-100 transition-smooth">
+                        <span>Apple</span>
+                    </div>
+                    <div class="flex items-center gap-4 text-gray-400 font-semibold whitespace-nowrap opacity-50 hover:opacity-100 transition-smooth">
+                        <span>Microsoft</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="py-24 md:py-32">
+        <div class="max-w-3xl mx-auto px-6">
+            <div class="text-center space-y-4 mb-16">
+                <p class="text-emerald-400 font-semibold text-sm uppercase tracking-widest">FREQUENTLY ASKED</p>
+                <h2 class="text-4xl md:text-5xl font-black font-['Plus_Jakarta_Sans'] tracking-tight leading-tight">
+                    Your Questions, Answered
+                </h2>
+            </div>
+
+            <div class="space-y-4">
+                <!-- FAQ Item 1 -->
+                <div class="accordion-item glass glass-hover border border-subtle border-subtle-hover rounded-lg overflow-hidden transition-smooth">
+                    <button class="w-full px-8 py-6 flex items-center justify-between hover:bg-white/5 transition-smooth">
+                        <span class="text-lg font-semibold font-['Plus_Jakarta_Sans'] text-left">How long does setup take?</span>
+                        <svg class="accordion-icon w-6 h-6 text-emerald-400 flex-shrink-0 ml-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+                        </svg>
+                    </button>
+                    <div class="accordion-content px-8 pb-6 text-gray-400">
+                        Setup takes about 10 minutes. We provide a guided onboarding process and dedicated support to ensure your team is productive from day one.
+                    </div>
+                </div>
+
+                <!-- FAQ Item 2 -->
+                <div class="accordion-item glass glass-hover border border-subtle border-subtle-hover rounded-lg overflow-hidden transition-smooth">
+                    <button class="w-full px-8 py-6 flex items-center justify-between hover:bg-white/5 transition-smooth">
+                        <span class="text-lg font-semibold font-['Plus_Jakarta_Sans'] text-left">What about data security?</span>
+                        <svg class="accordion-icon w-6 h-6 text-emerald-400 flex-shrink-0 ml-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+                        </svg>
+                    </button>
+                    <div class="accordion-content px-8 pb-6 text-gray-400">
+                        All data is encrypted end-to-end with AES-256. We comply with GDPR, SOC 2, and ISO 27001. Your team's work is always secure and protected.
+                    </div>
+                </div>
+
+                <!-- FAQ Item 3 -->
+                <div class="accordion-item glass glass-hover border border-subtle border-subtle-hover rounded-lg overflow-hidden transition-smooth">
+                    <button class="w-full px-8 py-6 flex items-center justify-between hover:bg-white/5 transition-smooth">
+                        <span class="text-lg font-semibold font-['Plus_Jakarta_Sans'] text-left">Can I integrate with existing tools?</span>
+                        <svg class="accordion-icon w-6 h-6 text-emerald-400 flex-shrink-0 ml-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+                        </svg>
+                    </button>
+                    <div class="accordion-content px-8 pb-6 text-gray-400">
+                        Yes. We provide REST APIs, webhooks, and native integrations with Slack, GitHub, Figma, and 100+ other tools. Build your perfect stack.
+                    </div>
+                </div>
+
+                <!-- FAQ Item 4 -->
+                <div class="accordion-item glass glass-hover border border-subtle border-subtle-hover rounded-lg overflow-hidden transition-smooth">
+                    <button class="w-full px-8 py-6 flex items-center justify-between hover:bg-white/5 transition-smooth">
+                        <span class="text-lg font-semibold font-['Plus_Jakarta_Sans'] text-left">What's the pricing model?</span>
+                        <svg class="accordion-icon w-6 h-6 text-emerald-400 flex-shrink-0 ml-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+                        </svg>
+                    </button>
+                    <div class="accordion-content px-8 pb-6 text-gray-400">
+                        We offer flexible plans starting at $99/month for teams. Enterprise plans include advanced features, custom integrations, and dedicated support.
+                    </div>
+                </div>
+
+                <!-- FAQ Item 5 -->
+                <div class="accordion-item glass glass-hover border border-subtle border-subtle-hover rounded-lg overflow-hidden transition-smooth">
+                    <button class="w-full px-8 py-6 flex items-center justify-between hover:bg-white/5 transition-smooth">
+                        <span class="text-lg font-semibold font-['Plus_Jakarta_Sans'] text-left">Do you offer a free trial?</span>
+                        <svg class="accordion-icon w-6 h-6 text-emerald-400 flex-shrink-0 ml-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+                        </svg>
+                    </button>
+                    <div class="accordion-content px-8 pb-6 text-gray-400">
+                        Absolutely. Start with a 14-day free trial, no credit card required. Full access to all features for your entire team.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 md:py-32 border-t border-subtle">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <h2 class="text-4xl md:text-5xl font-black font-['Plus_Jakarta_Sans'] tracking-tight leading-tight mb-8">
+                Ready to Transform Your Workflow?
+            </h2>
+            <p class="text-lg text-gray-400 mb-10 max-w-2xl mx-auto">
+                Join hundreds of leading creative teams already using Flowstate OS to plan, execute, and ship faster.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button class="btn-primary group relative bg-emerald-500 hover:bg-emerald-600 text-black font-semibold px-8 py-4 rounded-lg transition-smooth flex items-center justify-center gap-2 overflow-hidden">
+                    <span class="relative z-10">Get Started Free</span>
+                    <svg class="w-5 h-5 relative z-10 group-hover:translate-x-1 transition-smooth" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                    </svg>
+                </button>
+                <button class="glass glass-hover px-8 py-4 rounded-lg font-semibold transition-smooth">
+                    Schedule a Demo
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-subtle py-16 md:py-20">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <!-- Brand -->
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center">
+                            <svg class="w-5 h-5 text-emerald-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
+                        <span class="font-bold text-lg tracking-tight">Flowstate OS</span>
+                    </div>
+                    <p class="text-gray-500 text-sm">The operating system for creative teams.</p>
+                </div>
+
+                <!-- Product -->
+                <div>
+                    <h3 class="font-semibold mb-4">Product</h3>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-emerald-400 transition-smooth">Features</a></li>
+                        <li><a href="#" class="hover:text-emerald-400 transition-smooth">Pricing</a></li>
+                        <li><a href="#" class="hover:text-emerald-400 transition-smooth">API</a></li>
+                        <li><a href="#" class="hover:text-emerald-400 transition-smooth">Integrations</a></li>
+                    </ul>
+                </div>
+
+                <!-- Company -->
+                <div>
+                    <h3 class="font-semibold mb-4">Company</h3>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-emerald-400 transition-smooth">About</a></li>
+                        <li><a href="#" class="hover:text-emerald-400 transition-smooth">Blog</a></li>
+                        <li><a href="#" class="hover:text-emerald-400 transition-smooth">Careers</a></li>
+                        <li><a href="#" class="hover:text-emerald-400 transition-smooth">Contact</a></li>
+                    </ul>
+                </div>
+
+                <!-- Legal -->
+                <div>
+                    <h3 class="font-semibold mb-4">Legal</h3>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-emerald-400 transition-smooth">Privacy</a></li>
+                        <li><a href="#" class="hover:text-emerald-400 transition-smooth">Terms</a></li>
+                        <li><a href="#" class="hover:text-emerald-400 transition-smooth">Security</a></li>
+                        <li><a href="#" class="hover:text-emerald-400 transition-smooth">Compliance</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-subtle pt-12 flex flex-col md:flex-row items-center justify-between gap-6">
+                <p class="text-sm text-gray-500">© 2024 Flowstate OS. All rights reserved.</p>
+                <div class="flex items-center gap-6">
+                    <a href="#" class="text-gray-400 hover:text-emerald-400 transition-smooth">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-emerald-400 transition-smooth">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M23.953 4.57a10 10 0 002.856-3.515 10 10 0 01-2.856 1.415 4.993 4.993 0 00-8.686 4.554c-4.14-.203-7.83-2.16-10.298-5.144a4.993 4.993 0 001.548 6.66 4.98 4.98 0 01-2.263-.566v.06a4.993 4.993 0 003.995 4.9 4.993 4.993 0 01-2.252.085 4.994 4.994 0 004.644 3.461A10.016 10.016 0 012.846 20.74a14.04 14.04 0 001.996.11c2.21 0 4.313-.636 6.077-1.84a10.008 10.008 0 008.634-9.832 7.076 7.076 0 001.701-1.782z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-emerald-400 transition-smooth">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-2 16.412h-1.924v-6.222h1.924v6.222zm-1.004-7.08c-.621 0-1.035-.431-1.035-1.024 0-.587.414-1.025 1.065-1.025s1.035.438 1.035 1.025c0 .593-.414 1.024-1.065 1.024zm8.84 7.08h-1.924v-3.289c0-.827-.295-1.391-.997-1.391-.543 0-.916.366-1.067.72-.056.12-.065.294-.065.469v3.491h-1.925v-6.222h1.925v.847c.242-.374.684-1.004 1.986-1.004 1.45 0 2.537.966 2.537 3.052v3.327z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Accordion functionality
+        const accordionItems = document.querySelectorAll('.accordion-item button');
+
+        accordionItems.forEach(button => {
+            button.addEventListener('click', () => {
+                const item = button.parentElement;
+                const isActive = item.classList.contains('active');
+
+                // Close all items
+                document.querySelectorAll('.accordion-item').forEach(el => {
+                    el.classList.remove('active');
+                });
+
+                // Open clicked item
+                if (!isActive) {
+                    item.classList.add('active');
+                }
+            });
+        });
+
+        // Smooth scroll behavior for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#' && document.querySelector(href)) {
+                    e.preventDefault();
+                    document.querySelector(href).scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add scroll animation to feature cards when visible
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'slideUp 0.6s ease-out forwards';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.feature-card').forEach(card => {
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>
